@@ -27,7 +27,7 @@ class BibliotecaArbol {
         this.raiz = null;
     }
 
-    // Método para insertar un libro
+ 
     public void insertarLibro(int codigo, String titulo, String autor, int cantidad) {
         raiz = insertar(raiz, codigo, titulo, autor, cantidad);
     }
@@ -46,7 +46,7 @@ class BibliotecaArbol {
         return nodo;
     }
 
-    // Método para buscar un libro por código
+ 
     public NodoLibro buscarLibro(int codigo) {
         return buscar(raiz, codigo);
     }
@@ -62,7 +62,7 @@ class BibliotecaArbol {
         }
     }
 
-    // Método para prestar un libro
+
     public void prestarLibro(int codigo, int cantidad) {
         NodoLibro libro = buscarLibro(codigo);
         if (libro != null) {
@@ -77,7 +77,7 @@ class BibliotecaArbol {
         }
     }
 
-    // Método para devolver un libro
+
     public void devolverLibro(int codigo, int cantidad) {
         NodoLibro libro = buscarLibro(codigo);
         if (libro != null) {
@@ -88,7 +88,7 @@ class BibliotecaArbol {
         }
     }
 
-    // Método para mostrar el inventario de libros en orden
+
     public void mostrarInventario() {
         if (raiz == null) {
             System.out.println("La biblioteca está vacía.");
@@ -106,7 +106,7 @@ class BibliotecaArbol {
         }
     }
 
-    // Método principal para probar el sistema de la biblioteca
+
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);
         BibliotecaArbol biblioteca = new BibliotecaArbol();
