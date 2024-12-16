@@ -27,7 +27,7 @@ class BibliotecaArbol {
         this.raiz = null;
     }
 
- 
+
     public void insertarLibro(int codigo, String titulo, String autor, int cantidad) {
         raiz = insertar(raiz, codigo, titulo, autor, cantidad);
     }
@@ -46,7 +46,22 @@ class BibliotecaArbol {
         return nodo;
     }
 
- 
+
+    private NodoLibro actualizarCantidad(int codigo, int cantidad, boolean esDevolucion) {
+        NodoLibro libro = buscarLibro(codigo);
+        if (libro != null) {
+            if (esDevolucion || libro.cantidad >= cantidad) {
+                libro.cantidad += esDevolucion ? cantidad : -cantidad;
+                return libro;
+            } else {
+                System.out.println("Cantidad insuficiente de ejemplares disponibles.");
+            }
+        } else {
+            System.out.println("Libro no encontrado.");
+        }
+        return null;
+    }
+
     public NodoLibro buscarLibro(int codigo) {
         return buscar(raiz, codigo);
     }
@@ -64,47 +79,43 @@ class BibliotecaArbol {
 
 
     public void prestarLibro(int codigo, int cantidad) {
-        NodoLibro libro = buscarLibro(codigo);
+        NodoLibro libro = actualizarCantidad(codigo, cantidad, false);
         if (libro != null) {
-            if (libro.cantidad >= cantidad) {
-                libro.cantidad -= cantidad;
-                System.out.println("Préstamo realizado: " + cantidad + " ejemplares de '" + libro.titulo + "'");
-            } else {
-                System.out.println("Cantidad insuficiente de ejemplares disponibles.");
-            }
-        } else {
-            System.out.println("Libro no encontrado.");
+            System.out.println("Préstamo realizado: " + cantidad + " ejemplares de '" + libro.titulo + "'");
         }
     }
-
 
     public void devolverLibro(int codigo, int cantidad) {
-        NodoLibro libro = buscarLibro(codigo);
+        NodoLibro libro = actualizarCantidad(codigo, cantidad, true);
         if (libro != null) {
-            libro.cantidad += cantidad;
             System.out.println("Devolución realizada: " + cantidad + " ejemplares de '" + libro.titulo + "'");
-        } else {
-            System.out.println("Libro no encontrado.");
         }
     }
 
+
+
+    private void mostrarEnOrden(NodoLibro nodo, StringBuilder sb) {
+        if (nodo != null) {
+            mostrarEnOrden(nodo.izquierda, sb);
+            sb.append("Código: ").append(nodo.codigo)
+                    .append(" | Título: ").append(nodo.titulo)
+                    .append(" | Autor: ").append(nodo.autor)
+                    .append(" | Cantidad: ").append(nodo.cantidad).append("\n");
+            mostrarEnOrden(nodo.derecha, sb);
+        }
+    }
 
     public void mostrarInventario() {
         if (raiz == null) {
             System.out.println("La biblioteca está vacía.");
         } else {
             System.out.println("---- Inventario de la biblioteca en orden de código ----");
-            mostrarEnOrden(raiz);
+            StringBuilder sb = new StringBuilder();
+            mostrarEnOrden(raiz, sb);
+            System.out.print(sb.toString());
         }
     }
 
-    private void mostrarEnOrden(NodoLibro nodo) {
-        if (nodo != null) {
-            mostrarEnOrden(nodo.izquierda);
-            System.out.println("Código: " + nodo.codigo + " | Título: " + nodo.titulo + " | Autor: " + nodo.autor + " | Cantidad: " + nodo.cantidad);
-            mostrarEnOrden(nodo.derecha);
-        }
-    }
 
 
     public static void main(String[] args) {
